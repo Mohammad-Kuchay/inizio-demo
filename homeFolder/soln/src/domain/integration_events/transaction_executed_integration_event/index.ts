@@ -1,0 +1,4 @@
+import { TransactionExecutedIntegrationEventIntegrationEvent } from './transaction_executed_integration_event_event';
+import { ITransactionExecutedIntegrationEventIntegrationEventProps } from './transaction_executed_integration_event_event_props';
+
+export { TransactionExecutedIntegrationEventIntegrationEvent, ITransactionExecutedIntegrationEventIntegrationEventProps };
