@@ -1,0 +1,32 @@
+name: $(Date:yyyyMMdd).$(Rev:r).$(Build.BuildId)
+
+trigger: none
+pr: none
+
+variables:
+  artifact_name: bank-service-ms
+
+stages:
+  - stage: BUILD
+    displayName: "Build BankServiceMs Microservice"
+    jobs:
+    - job: Build
+      displayName: Build BankServiceMs Microservice
+      steps:
+        - template: /homeFolder/devops/pipeline-templates/ms-build-steps-template.yaml
+          parameters:
+            solutionFolder: "homeFolder/soln/"
+            repositoryName: "app-innovation/hexagonal"
+            dockerfilePath: "homeFolder/devops/Dockerfile"
+            helmChartPath: "homeFolder/devops/nodejsapp"
+            valuePath: "homeFolder/devops/ci"
+            artifactTag: "latest-artifact-build"
+            contextPath: "homeFolder/soln/"
+            crServiceConnection: "github-registry"
+
+  - stage: RELEASE
+    displayName: "Deploy BankServiceMs Microservice"
+    variables:
+      ms_release: "bank-service-ms-release-v1"
+    jobs:
+    
