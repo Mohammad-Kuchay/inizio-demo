@@ -1,0 +1,266 @@
+{
+  "@neudesic/inizio-cli": {
+    "basicInformation": {
+      "description": "A service for managing banking operations",
+      "domainName": "banking",
+      "name": "bank-ms",
+      "subDomainName": "accounts",
+      "technology": "Nodejs",
+      "version": "1.0.0"
+    },
+    "cachingConfiguration": {
+      "configuration": {
+        "connectionString": "localhost:6379"
+      },
+      "connectionMethod": "connectionString",
+      "enabled": true,
+      "provider": "Redis"
+    },
+    "databaseConfiguration": {
+      "databases": [
+        {
+          "connectionMethod": "connectionString",
+          "connectionOptions": {
+            "connectionString": "postgres://username:password@hostname:5432/database"
+          },
+          "dbPurpose": "read-write",
+          "dbType": "postgres"
+        }
+      ],
+      "enabled": true
+    },
+    "devopsConfiguration": {
+      "devopsRelativePath": "",
+      "enabled": true,
+      "environments": [],
+      "repoConfiguration": {
+        "basePath": "homeFolder",
+        "commitMessage": "home commit message",
+        "organisationName": "Mohammad-Kuchay",
+        "provider": "github",
+        "pullRequestConfiguration": {
+          "createPullRequest": true,
+          "pullRequestDescription": "This is a test pull request",
+          "pullRequestTitle": "Created from copilot"
+        },
+        "repositoryName": "inizio-demo",
+        "sourceBranch": "main",
+        "targetBranch": "homeBranch"
+      }
+    },
+    "domainModels": {
+      "aggregates": [
+        {
+          "functions": [],
+          "name": "Account",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountNumber",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountHolderName",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "balance",
+              "nullable": false,
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "functions": [],
+          "name": "Transaction",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "transactionId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "amount",
+              "nullable": false,
+              "type": "number"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "transactionType",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "transactionDate",
+              "nullable": false,
+              "type": "Date"
+            }
+          ]
+        }
+      ],
+      "domainEvents": [],
+      "entities": [
+        {
+          "functions": [],
+          "name": "Customer",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "name",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "email",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "phoneNumber",
+              "nullable": false,
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "enums": [
+        {
+          "name": "AccountType",
+          "values": [
+            "SAVINGS",
+            "CURRENT",
+            "FIXED"
+          ]
+        }
+      ],
+      "integrationEvents": [
+        {
+          "eventType": "AccountCreatedIntegrationEvent",
+          "name": "AccountCreated",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountHolderName",
+              "nullable": false,
+              "type": "string"
+            }
+          ],
+          "topicName": "bank-accounts"
+        }
+      ],
+      "valueObjects": [
+        {
+          "functions": [],
+          "name": "Money",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "currency",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "amount",
+              "nullable": false,
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    "messagingSystemConfiguration": {
+      "configuration": {
+        "connectionConfig": {
+          "brokers": "localhost:9092",
+          "saslMechanism": "PLAIN",
+          "saslPassword": "NOT_A_VALID_SASL_PASSWORD",
+          "saslUsername": "NOT_A_VALID_SASL_USERNAME"
+        },
+        "consumerConfig": {
+          "consumerGroupId": "inizio-01"
+        },
+        "enableConsumer": true,
+        "enableProducer": true,
+        "producerConfig": {
+          "clientId": "inizio-01",
+          "enableTransaction": true
+        },
+        "schemaRegistryConfig": {
+          "enabled": true,
+          "password": "NOT_A_VALID_SCHEMA_REGISTRY_PASSWORD",
+          "url": "http://localhost:8081",
+          "username": "NOT_A_VALID_SCHEMA_REGISTRY_USERNAME"
+        }
+      },
+      "enabled": true,
+      "provider": "Kafka"
+    },
+    "secretManagerConfiguration": {
+      "configuration": {
+        "clientId": "NOT_A_VALID_CLIENT_ID",
+        "clientSecret": "NOT_A_VALID_CLIENT_SECRET",
+        "keyVaultUrl": "NOT_A_VALID_KEY_VAULT_URL",
+        "tenantId": "NOT_A_VALID_TENANT_ID"
+      },
+      "enabled": true,
+      "provider": "KeyVault"
+    },
+    "serverConfiguration": {
+      "enabled": true,
+      "portNumber": 8080,
+      "rootPath": ""
+    },
+    "telemetryConfiguration": {
+      "configuration": {
+        "appInsightsConnectionString": "some secret connection string",
+        "appInsightsInstrumentationKey": "NOT_A_VALID_INSTRUMENTATION_KEY"
+      },
+      "enabled": true,
+      "provider": "AzureApplicationInsights"
+    }
+  }
+}
