@@ -1,0 +1,352 @@
+{
+  "@neudesic/inizio-cli": {
+    "basicInformation": {
+      "description": "Handles core banking services and functionalities.",
+      "domainName": "banking",
+      "name": "bank-ms",
+      "subDomainName": "accounts",
+      "technology": "Nodejs",
+      "version": "1.0.0"
+    },
+    "cachingConfiguration": {
+      "configuration": {
+        "connectionString": "localhost:6379"
+      },
+      "connectionMethod": "connectionString",
+      "enabled": true,
+      "provider": "Redis"
+    },
+    "databaseConfiguration": {
+      "databases": [
+        {
+          "connectionMethod": "connectionString",
+          "connectionOptions": {
+            "connectionString": "postgres://username:password@hostname:5432/database"
+          },
+          "dbPurpose": "read-write",
+          "dbType": "postgres"
+        }
+      ],
+      "enabled": true
+    },
+    "devopsConfiguration": {
+      "devopsRelativePath": "",
+      "enabled": true,
+      "environments": [],
+      "repoConfiguration": {
+        "basePath": "homeFolder",
+        "commitMessage": "home commit message",
+        "organisationName": "Mohammad-Kuchay",
+        "provider": "github",
+        "pullRequestConfiguration": {
+          "createPullRequest": true,
+          "pullRequestDescription": "This is a test pull request",
+          "pullRequestTitle": "Created from copilot"
+        },
+        "repositoryName": "inizio-demo",
+        "sourceBranch": "main",
+        "targetBranch": "homeBranch"
+      }
+    },
+    "domainModels": {
+      "aggregates": [
+        {
+          "functions": [
+            {
+              "accessModifier": "public",
+              "isStatic": false,
+              "name": "openAccount",
+              "nullable": false,
+              "parameters": [
+                {
+                  "isArray": false,
+                  "name": "customerId",
+                  "nullable": false,
+                  "type": "string"
+                },
+                {
+                  "isArray": false,
+                  "name": "initialBalance",
+                  "nullable": false,
+                  "type": "number"
+                }
+              ],
+              "returnType": "void"
+            },
+            {
+              "accessModifier": "public",
+              "isStatic": false,
+              "name": "closeAccount",
+              "nullable": false,
+              "parameters": [
+                {
+                  "isArray": false,
+                  "name": "accountId",
+                  "nullable": false,
+                  "type": "string"
+                }
+              ],
+              "returnType": "void"
+            }
+          ],
+          "name": "Account",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountNumber",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "balance",
+              "nullable": false,
+              "type": "number"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "status",
+              "nullable": false,
+              "type": "AccountStatusEnum"
+            }
+          ]
+        }
+      ],
+      "domainEvents": [
+        {
+          "name": "AccountCreatedEvent",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "createdDate",
+              "nullable": false,
+              "type": "Date"
+            }
+          ]
+        },
+        {
+          "name": "AccountClosedEvent",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "closedDate",
+              "nullable": false,
+              "type": "Date"
+            }
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "functions": [
+            {
+              "accessModifier": "public",
+              "isStatic": false,
+              "name": "updateCustomerInfo",
+              "nullable": false,
+              "parameters": [
+                {
+                  "isArray": false,
+                  "name": "customerId",
+                  "nullable": false,
+                  "type": "string"
+                },
+                {
+                  "isArray": false,
+                  "name": "contactInfo",
+                  "nullable": false,
+                  "type": "ContactInfo"
+                }
+              ],
+              "returnType": "void"
+            }
+          ],
+          "name": "Customer",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "firstName",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "lastName",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "contactInfo",
+              "nullable": false,
+              "type": "ContactInfo"
+            }
+          ]
+        }
+      ],
+      "enums": [
+        {
+          "name": "AccountStatusEnum",
+          "values": [
+            "ACTIVE",
+            "SUSPENDED",
+            "CLOSED"
+          ]
+        }
+      ],
+      "integrationEvents": [
+        {
+          "eventType": "AccountBalanceUpdatedIntegrationEvent",
+          "name": "AccountBalanceUpdatedEvent",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "newBalance",
+              "nullable": false,
+              "type": "number"
+            }
+          ],
+          "topicName": "account-balance-updated"
+        }
+      ],
+      "valueObjects": [
+        {
+          "functions": [
+            {
+              "accessModifier": "public",
+              "isStatic": false,
+              "name": "updateContactInfo",
+              "nullable": false,
+              "parameters": [
+                {
+                  "isArray": false,
+                  "name": "newEmail",
+                  "nullable": false,
+                  "type": "string"
+                },
+                {
+                  "isArray": false,
+                  "name": "newPhone",
+                  "nullable": false,
+                  "type": "string"
+                }
+              ],
+              "returnType": "void"
+            }
+          ],
+          "name": "ContactInfo",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "email",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "phone",
+              "nullable": false,
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    "messagingSystemConfiguration": {
+      "configuration": {
+        "connectionConfig": {
+          "brokers": "localhost:9092",
+          "saslMechanism": "PLAIN",
+          "saslPassword": "NOT_A_VALID_SASL_PASSWORD",
+          "saslUsername": "NOT_A_VALID_SASL_USERNAME"
+        },
+        "consumerConfig": {
+          "consumerGroupId": "inizio-01"
+        },
+        "enableConsumer": true,
+        "enableProducer": true,
+        "producerConfig": {
+          "clientId": "inizio-01",
+          "enableTransaction": true
+        },
+        "schemaRegistryConfig": {
+          "enabled": true,
+          "password": "NOT_A_VALID_SCHEMA_REGISTRY_PASSWORD",
+          "url": "http://localhost:8081",
+          "username": "NOT_A_VALID_SCHEMA_REGISTRY_USERNAME"
+        }
+      },
+      "enabled": true,
+      "provider": "Kafka"
+    },
+    "secretManagerConfiguration": {
+      "configuration": {
+        "clientId": "NOT_A_VALID_CLIENT_ID",
+        "clientSecret": "NOT_A_VALID_CLIENT_SECRET",
+        "keyVaultUrl": "NOT_A_VALID_KEY_VAULT_URL",
+        "tenantId": "NOT_A_VALID_TENANT_ID"
+      },
+      "enabled": true,
+      "provider": "KeyVault"
+    },
+    "serverConfiguration": {
+      "enabled": true,
+      "portNumber": 8080,
+      "rootPath": ""
+    },
+    "telemetryConfiguration": {
+      "configuration": {
+        "appInsightsConnectionString": "some secret connection string",
+        "appInsightsInstrumentationKey": "NOT_A_VALID_INSTRUMENTATION_KEY"
+      },
+      "enabled": true,
+      "provider": "AzureApplicationInsights"
+    }
+  }
+}
