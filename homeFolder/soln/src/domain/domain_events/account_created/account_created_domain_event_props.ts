@@ -1,0 +1,12 @@
+import { Customer } from '../customer';
+/**
+ * Interface for the AccountCreatedDomainEvent DomainEvent. Contains the properties of AccountCreatedDomainEvent
+ *
+ * @export
+ * @interface IAccountCreatedDomainEventProps
+ */
+export interface IAccountCreatedDomainEventProps {
+    id: string;
+    accountNumber: string;
+    owner: Customer;
+}

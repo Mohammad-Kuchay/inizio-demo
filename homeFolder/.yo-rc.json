@@ -1,0 +1,394 @@
+{
+  "@neudesic/inizio-cli": {
+    "basicInformation": {
+      "description": "A microservice for managing banking operations such as accounts, transactions, and loans.",
+      "domainName": "banking",
+      "name": "bank-service-ms",
+      "subDomainName": "core",
+      "technology": "Nodejs",
+      "version": "1.0.0"
+    },
+    "cachingConfiguration": {
+      "configuration": {
+        "connectionString": "localhost:6379"
+      },
+      "connectionMethod": "connectionString",
+      "enabled": true,
+      "provider": "Redis"
+    },
+    "databaseConfiguration": {
+      "databases": [
+        {
+          "connectionMethod": "connectionString",
+          "connectionOptions": {
+            "connectionString": "postgres://username:password@hostname:5432/database"
+          },
+          "dbPurpose": "read-write",
+          "dbType": "postgres"
+        }
+      ],
+      "enabled": true
+    },
+    "devopsConfiguration": {
+      "devopsRelativePath": "",
+      "enabled": true,
+      "environments": [],
+      "repoConfiguration": {
+        "basePath": "homeFolder",
+        "commitMessage": "demo for suresh commit message",
+        "organisationName": "Mohammad-Kuchay",
+        "provider": "github",
+        "pullRequestConfiguration": {
+          "createPullRequest": true,
+          "pullRequestDescription": "This is a test pull request",
+          "pullRequestTitle": "Created from copilot agent"
+        },
+        "repositoryName": "inizio-demo",
+        "sourceBranch": "main",
+        "targetBranch": "inizio-demo-suresh"
+      }
+    },
+    "domainModels": {
+      "aggregates": [
+        {
+          "functions": [
+            {
+              "accessModifier": "public",
+              "isStatic": false,
+              "name": "credit",
+              "nullable": false,
+              "parameters": [
+                {
+                  "isArray": false,
+                  "name": "amount",
+                  "nullable": false,
+                  "type": "number"
+                }
+              ],
+              "returnType": "void"
+            },
+            {
+              "accessModifier": "public",
+              "isStatic": false,
+              "name": "debit",
+              "nullable": false,
+              "parameters": [
+                {
+                  "isArray": false,
+                  "name": "amount",
+                  "nullable": false,
+                  "type": "number"
+                }
+              ],
+              "returnType": "void"
+            }
+          ],
+          "name": "Account",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountNumber",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountType",
+              "nullable": false,
+              "type": "AccountTypeEnum"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "balance",
+              "nullable": false,
+              "type": "number"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "owner",
+              "nullable": false,
+              "type": "Customer"
+            }
+          ]
+        },
+        {
+          "functions": [],
+          "name": "Loan",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "loanId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "loanType",
+              "nullable": false,
+              "type": "LoanTypeEnum"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "amount",
+              "nullable": false,
+              "type": "number"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "interestRate",
+              "nullable": false,
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "domainEvents": [
+        {
+          "name": "AccountCreated",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountNumber",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "owner",
+              "nullable": false,
+              "type": "Customer"
+            }
+          ]
+        },
+        {
+          "name": "TransactionMade",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "transactionId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "amount",
+              "nullable": false,
+              "type": "number"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountNumber",
+              "nullable": false,
+              "type": "string"
+            }
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "functions": [],
+          "name": "Transaction",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "transactionId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "amount",
+              "nullable": false,
+              "type": "number"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "transactionType",
+              "nullable": false,
+              "type": "TransactionTypeEnum"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "account",
+              "nullable": false,
+              "type": "Account"
+            }
+          ]
+        }
+      ],
+      "enums": [
+        {
+          "name": "AccountTypeEnum",
+          "values": [
+            "SAVINGS",
+            "CURRENT"
+          ]
+        },
+        {
+          "name": "TransactionTypeEnum",
+          "values": [
+            "DEBIT",
+            "CREDIT"
+          ]
+        },
+        {
+          "name": "LoanTypeEnum",
+          "values": [
+            "PERSONAL",
+            "HOME",
+            "BUSINESS"
+          ]
+        }
+      ],
+      "integrationEvents": [
+        {
+          "eventType": "LoanIntegrationEvent",
+          "name": "LoanApproved",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "loanId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "customerId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "amount",
+              "nullable": false,
+              "type": "number"
+            }
+          ],
+          "topicName": "loan-approved-events"
+        }
+      ],
+      "valueObjects": [
+        {
+          "functions": [],
+          "name": "Customer",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "customerId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "name",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "email",
+              "nullable": false,
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    "messagingSystemConfiguration": {
+      "configuration": {
+        "connectionConfig": {
+          "brokers": "localhost:9092",
+          "saslMechanism": "PLAIN",
+          "saslPassword": "NOT_A_VALID_SASL_PASSWORD",
+          "saslUsername": "NOT_A_VALID_SASL_USERNAME"
+        },
+        "consumerConfig": {
+          "consumerGroupId": "inizio-01"
+        },
+        "enableConsumer": true,
+        "enableProducer": true,
+        "producerConfig": {
+          "clientId": "inizio-01",
+          "enableTransaction": true
+        },
+        "schemaRegistryConfig": {
+          "enabled": true,
+          "password": "NOT_A_VALID_SCHEMA_REGISTRY_PASSWORD",
+          "url": "http://localhost:8081",
+          "username": "NOT_A_VALID_SCHEMA_REGISTRY_USERNAME"
+        }
+      },
+      "enabled": true,
+      "provider": "Kafka"
+    },
+    "secretManagerConfiguration": {
+      "configuration": {
+        "clientId": "NOT_A_VALID_CLIENT_ID",
+        "clientSecret": "NOT_A_VALID_CLIENT_SECRET",
+        "keyVaultUrl": "NOT_A_VALID_KEY_VAULT_URL",
+        "tenantId": "NOT_A_VALID_TENANT_ID"
+      },
+      "enabled": true,
+      "provider": "KeyVault"
+    },
+    "serverConfiguration": {
+      "enabled": true,
+      "portNumber": 8080,
+      "rootPath": ""
+    },
+    "telemetryConfiguration": {
+      "configuration": {
+        "appInsightsConnectionString": "some secret connection string",
+        "appInsightsInstrumentationKey": "NOT_A_VALID_INSTRUMENTATION_KEY"
+      },
+      "enabled": true,
+      "provider": "AzureApplicationInsights"
+    }
+  }
+}

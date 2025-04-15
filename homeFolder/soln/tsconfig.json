@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": [
+            "dom",
+            "es2022",
+            "esnext.asynciterable"
+        ],
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "types": [
+            "reflect-metadata",
+            "mocha"
+        ],
+        "module": "CommonJS",
+        "outDir": "dist",
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "allowUnreachableCode": false,
+        "noImplicitThis": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+    },
+    "include": [
+        "src/**/*.ts"
+, "../typeorm.inversify.config.ts"    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
