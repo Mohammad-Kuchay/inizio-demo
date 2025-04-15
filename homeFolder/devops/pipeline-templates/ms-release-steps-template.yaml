@@ -1,0 +1,59 @@
+parameters:
+- name: namespace
+  type: string
+
+steps:
+
+- task: Bash@3
+  displayName: Retrieve artifact id
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo "Setting up deployment variables..."
+      devops_build_id="$(jq -r '.buildId' < $(artifact_name)/build-artifact.json)"
+      package_version="$(jq -r '.msVersion' < $(artifact_name)/build-artifact.json)"
+      microservice_name="$(jq -r '.msName' < $(artifact_name)/build-artifact.json)"
+      package_version_release=$(echo "$package_version" | tr -d '.')
+      echo "ms-version - $package_version, BuildId - $devops_build_id, ms-name - $microservice_name"
+      echo "##vso[task.setvariable variable=ms_version;]$package_version"
+      echo "##vso[task.setvariable variable=build_id;]$devops_build_id"
+      echo "##vso[task.setvariable variable=release_version;]$package_version_release"
+      echo "##vso[task.setvariable variable=ms_name;]$microservice_name"
+    workingDirectory: $(Agent.BuildDirectory)
+
+- task: HelmInstaller@0
+  inputs:
+    helmVersion: '2.14.1'
+    installKubectl: true
+
+- task: Bash@3
+  displayName: Helm Validate - Lint & Template
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo 'Image Tag - $(build_id)'
+      echo "Helm release - $(ms_release)"
+      helm template nodejsapp-0.1.0.tgz --set image.imageTag=$(ms_version).$(build_id) --values $(Agent.BuildDirectory)/$(artifact_name)/values.yaml     
+     
+      helm lint nodejsapp-0.1.0.tgz --set image.imageTag=$(ms_version).$(build_id) --values $(Agent.BuildDirectory)/$(artifact_name)/values.yaml
+    workingDirectory: '$(Agent.BuildDirectory)/$(artifact_name)'
+
+- task: HelmDeploy@0
+  displayName: Helm Deploy
+  inputs:
+    connectionType: 'Kubernetes Service Connection'            
+    namespace: '${{ parameters.namespace }}'
+    command: upgrade
+    releaseName: '$(ms_release)'
+    chartType: 'FilePath'
+    chartPath: '$(Agent.BuildDirectory)/$(artifact_name)/nodejsapp-0.1.0.tgz'
+    overrideValues: 'image.imageTag=$(ms_version).$(build_id)'
+    valueFile: '$(Agent.BuildDirectory)/$(artifact_name)/values.yaml'
+    
+- task: Kubernetes@1
+  displayName: Print Ingress Details
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    namespace: '${{ parameters.namespace }}'
+    command: 'describe'
+    arguments: 'ingress -l app.kubernetes.io/instance=$(ms_release)-$(release_version)'

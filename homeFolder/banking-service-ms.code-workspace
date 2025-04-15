@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "Service Root"
+		},
+		{
+			"path": "devops",
+			"name": "Devops Configuration"
+		},
+		{
+			"path": "soln",
+			"name": "Solution"
+		}
+	],
+    "settings": {
+        "files.exclude": {
+            "soln/*": true,
+            "devops/*": true
+        }
+    }
+}

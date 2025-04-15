@@ -1,0 +1,79 @@
+parameters:
+- name: solutionFolder
+  type: string
+- name: repositoryName
+  type: string
+- name: dockerfilePath
+  type: string
+- name: helmChartPath
+  type: string
+- name: valuePath
+  type: string
+- name: artifactTag
+  type: string
+- name: contextPath
+  type: string
+- name: crServiceConnection
+  type: string
+
+steps:
+
+- task: Bash@3
+  displayName: 'Get Package version'
+  inputs:
+    targetType: 'inline'
+    script: |
+      #!/bin/bash
+      package_version="$(node -p -e "require('./package.json').version")"
+      microservice_name="$(node -p -e "require('./package.json').name")"
+      echo $package_version
+      echo "##vso[task.setvariable variable=ms_package_version;]$package_version"
+      echo "##vso[task.setvariable variable=ms_microservice_name;]$microservice_name"
+    workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.solutionFolder }}'
+
+- task: Docker@2
+  displayName: Build Docker Image
+  inputs:
+    containerRegistry: 'github-registry'
+    repository: '${{ parameters.repositoryName }}'
+    command: 'buildAndPush'
+    Dockerfile: '$(Build.SourcesDirectory)/${{ parameters.dockerfilePath }}'
+    buildContext: '$(Build.SourcesDirectory)/${{ parameters.contextPath }}/'
+    tags: '$(ms_package_version).$(Build.BuildId)'
+
+- task: HelmDeploy@0
+  displayName: 'Helm package'
+  inputs:
+    command: 'package'
+    chartPath: '$(Build.SourcesDirectory)/${{ parameters.helmChartPath }}'
+    save: false
+    updateDependency: true
+
+- task: Bash@3
+  displayName: 'Create Build artifact file'
+  inputs:
+    targetType: 'inline'
+    script: |
+      #!/bin/bash
+      echo "Creating build-artifact.json - BuildId:-$(Build.BuildId), msVersion:-$(ms_package_version), msName:-$(ms_microservice_name)"
+      jq -n --arg buildId $(Build.BuildId) --arg msVersion $(ms_package_version) --arg msName $(ms_microservice_name) '{"buildId":$buildId, "msVersion": $msVersion, "msName": $msName}' > build-artifact.json
+    workingDirectory: $(Build.ArtifactStagingDirectory)
+
+- task: CopyFiles@2
+  displayName: Copy CI files to artifact directory
+  inputs:
+    SourceFolder: '${{ parameters.valuePath }}'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact - $(artifact_name)'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: $(artifact_name)
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact - $(artifact_name)-$(Build.BuildId)'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/build-artifact.json'
+    ArtifactName: $(artifact_name)-$(Build.BuildId)
