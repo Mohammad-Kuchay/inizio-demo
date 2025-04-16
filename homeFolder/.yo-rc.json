@@ -1,0 +1,353 @@
+{
+  "@neudesic/inizio-cli": {
+    "basicInformation": {
+      "description": "A microservice to handle core banking operations.",
+      "domainName": "banking-domain",
+      "name": "bank-service-ms",
+      "subDomainName": "banking-core",
+      "technology": "Nodejs",
+      "version": "1.0.0"
+    },
+    "cachingConfiguration": {
+      "configuration": {
+        "connectionString": "localhost:6379"
+      },
+      "connectionMethod": "connectionString",
+      "enabled": true,
+      "provider": "Redis"
+    },
+    "databaseConfiguration": {
+      "databases": [
+        {
+          "connectionMethod": "connectionString",
+          "connectionOptions": {
+            "connectionString": "postgres://username:password@hostname:5432/database"
+          },
+          "dbPurpose": "read-write",
+          "dbType": "postgres"
+        }
+      ],
+      "enabled": true
+    },
+    "devopsConfiguration": {
+      "devopsRelativePath": "",
+      "enabled": true,
+      "environments": [],
+      "repoConfiguration": {
+        "basePath": "homeFolder",
+        "commitMessage": "demo for suresh commit message",
+        "organisationName": "Mohammad-Kuchay",
+        "provider": "github",
+        "pullRequestConfiguration": {
+          "createPullRequest": true,
+          "pullRequestDescription": "This is a test pull request",
+          "pullRequestTitle": "Created from copilot agent"
+        },
+        "repositoryName": "inizio-demo",
+        "sourceBranch": "main",
+        "targetBranch": "inizio-demo-suresh"
+      }
+    },
+    "domainModels": {
+      "aggregates": [
+        {
+          "functions": [
+            {
+              "accessModifier": "public",
+              "isStatic": false,
+              "name": "deposit",
+              "nullable": false,
+              "parameters": [
+                {
+                  "isArray": false,
+                  "name": "amount",
+                  "nullable": false,
+                  "type": "number"
+                }
+              ],
+              "returnType": "void"
+            },
+            {
+              "accessModifier": "public",
+              "isStatic": false,
+              "name": "withdraw",
+              "nullable": false,
+              "parameters": [
+                {
+                  "isArray": false,
+                  "name": "amount",
+                  "nullable": false,
+                  "type": "number"
+                }
+              ],
+              "returnType": "void"
+            },
+            {
+              "accessModifier": "public",
+              "isStatic": false,
+              "name": "freeze",
+              "nullable": false,
+              "parameters": [],
+              "returnType": "void"
+            }
+          ],
+          "name": "Account",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountHolder",
+              "nullable": false,
+              "type": "User"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountNumber",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "balance",
+              "nullable": false,
+              "type": "number"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "status",
+              "nullable": false,
+              "type": "AccountStatusEnum"
+            }
+          ]
+        }
+      ],
+      "domainEvents": [
+        {
+          "name": "AccountFrozenEvent",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "accountNumber",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "reason",
+              "nullable": true,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "dateFrozen",
+              "nullable": false,
+              "type": "Date"
+            }
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "functions": [],
+          "name": "Transaction",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "transactionId",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "amount",
+              "nullable": false,
+              "type": "number"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "transactionType",
+              "nullable": false,
+              "type": "TransactionTypeEnum"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "date",
+              "nullable": false,
+              "type": "Date"
+            }
+          ]
+        }
+      ],
+      "enums": [
+        {
+          "name": "AccountStatusEnum",
+          "values": [
+            "ACTIVE",
+            "FROZEN",
+            "CLOSED"
+          ]
+        },
+        {
+          "name": "TransactionTypeEnum",
+          "values": [
+            "DEPOSIT",
+            "WITHDRAWAL",
+            "TRANSFER"
+          ]
+        }
+      ],
+      "integrationEvents": [
+        {
+          "eventType": "FundsTransferredIntegrationEvent",
+          "name": "FundsTransferredIntegrationEvent",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "sourceAccountNumber",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "destinationAccountNumber",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "amount",
+              "nullable": false,
+              "type": "number"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "transferDate",
+              "nullable": false,
+              "type": "Date"
+            }
+          ],
+          "topicName": "funds-transferred-event"
+        }
+      ],
+      "valueObjects": [
+        {
+          "functions": [],
+          "name": "User",
+          "properties": [
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "firstName",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "lastName",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "email",
+              "nullable": false,
+              "type": "string"
+            },
+            {
+              "accessModifier": "public",
+              "isArray": false,
+              "isStatic": false,
+              "name": "phoneNumber",
+              "nullable": true,
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
+    "messagingSystemConfiguration": {
+      "configuration": {
+        "connectionConfig": {
+          "brokers": "localhost:9092",
+          "saslMechanism": "PLAIN",
+          "saslPassword": "NOT_A_VALID_SASL_PASSWORD",
+          "saslUsername": "NOT_A_VALID_SASL_USERNAME"
+        },
+        "consumerConfig": {
+          "consumerGroupId": "inizio-01"
+        },
+        "enableConsumer": true,
+        "enableProducer": true,
+        "producerConfig": {
+          "clientId": "inizio-01",
+          "enableTransaction": true
+        },
+        "schemaRegistryConfig": {
+          "enabled": true,
+          "password": "NOT_A_VALID_SCHEMA_REGISTRY_PASSWORD",
+          "url": "http://localhost:8081",
+          "username": "NOT_A_VALID_SCHEMA_REGISTRY_USERNAME"
+        }
+      },
+      "enabled": true,
+      "provider": "Kafka"
+    },
+    "secretManagerConfiguration": {
+      "configuration": {
+        "clientId": "NOT_A_VALID_CLIENT_ID",
+        "clientSecret": "NOT_A_VALID_CLIENT_SECRET",
+        "keyVaultUrl": "NOT_A_VALID_KEY_VAULT_URL",
+        "tenantId": "NOT_A_VALID_TENANT_ID"
+      },
+      "enabled": true,
+      "provider": "KeyVault"
+    },
+    "serverConfiguration": {
+      "enabled": true,
+      "portNumber": 8080,
+      "rootPath": ""
+    },
+    "telemetryConfiguration": {
+      "configuration": {
+        "appInsightsConnectionString": "some secret connection string",
+        "appInsightsInstrumentationKey": "NOT_A_VALID_INSTRUMENTATION_KEY"
+      },
+      "enabled": true,
+      "provider": "AzureApplicationInsights"
+    }
+  }
+}
